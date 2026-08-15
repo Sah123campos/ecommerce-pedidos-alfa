@@ -8,7 +8,7 @@
 | Nome | Papel na Aula 01 |
 |---|---|
 | _(Samuel Santana Pereira Campos)_ | Responsável do dia |
-| _(nome do integrante 2)_ | |
+| _(Rafael Paiutto da Silva)_ | |
 
 ## Descrição do desafio
 
