@@ -38,16 +38,22 @@ processamento de pagamentos (cartão, boleto, Pix) de forma organizada e eficien
 
 ```
 ecommerce-pedidos-alfa/
-├── Back-end/
-│   └── src/
-│       ├── main/
-│       │   └── java/
-│       │       └── com/coffeecode/ecommerce/
-│       │           ├── model/
-│       │           └── App.java
-│       └── test/
-│           └── java/
-│               └── com/coffeecode/ecommerce/
+├── back/
+│   └── ecommerce-pedidos-alfa/
+│       ├── pom.xml
+│       └── src/
+│           ├── main/
+│           │   └── java/
+│           │       └── com/ecommerce/pedidos/alfa/
+│           │           ├── model/
+│           │           │   ├── Cliente.java
+│           │           │   ├── Endereco.java
+│           │           │   ├── ItemPedido.java
+│           │           │   └── Produto.java
+│           │           └── App.java
+│           └── test/
+│               └── java/
+│                   └── com/ecommerce/pedidos/alfa/
 ├── front/
 ├── pom.xml
 ├── README.md

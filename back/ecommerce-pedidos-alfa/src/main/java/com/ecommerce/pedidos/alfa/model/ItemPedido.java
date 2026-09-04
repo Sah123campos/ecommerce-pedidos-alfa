@@ -1,4 +1,4 @@
-package com.coffeecode.ecommerce.model;
+package com.ecommerce.pedidos.alfa.model;
 
 public class ItemPedido {
     private Produto produto;

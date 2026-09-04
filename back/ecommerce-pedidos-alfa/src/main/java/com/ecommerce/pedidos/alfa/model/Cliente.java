@@ -1,4 +1,4 @@
-package com.coffeecode.ecommerce.model;
+package com.ecommerce.pedidos.alfa.model;
 
 public class Cliente {
     private String nome;

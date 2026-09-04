@@ -1,4 +1,4 @@
-package com.coffeecode.ecommerce;
+package com.ecommerce.pedidos.alfa;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
