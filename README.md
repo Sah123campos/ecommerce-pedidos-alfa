@@ -56,23 +56,6 @@ ecommerce-pedidos-alfa/
 │           └── com/senai/ecommerce/
 │               └── AplicacaoTest.java
 ├── docs/                 # diagramas (draw.io + PNG) das Aulas 04, 06 e 07
-├── back/
-│   └── ecommerce-pedidos-alfa/
-│       ├── pom.xml
-│       └── src/
-│           ├── main/
-│           │   └── java/
-│           │       └── com/ecommerce/pedidos/alfa/
-│           │           ├── model/
-│           │           │   ├── Cliente.java
-│           │           │   ├── Endereco.java
-│           │           │   ├── ItemPedido.java
-│           │           │   └── Produto.java
-│           │           └── App.java
-│           └── test/
-│               └── java/
-│                   └── com/ecommerce/pedidos/alfa/
-├── front/
 ├── pom.xml
 ├── README.md
 └── .gitignore
@@ -85,7 +68,6 @@ mvn compile
 mvn exec:java -Dexec.mainClass="com.senai.ecommerce.Aplicacao"
 mvn test
 ```
-_(Projeto acadêmico do SENAI na aula de back end.)_
 
 ## Roadmap do projeto (por aula)
 
