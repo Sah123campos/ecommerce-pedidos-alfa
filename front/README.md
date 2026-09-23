@@ -1,20 +1,22 @@
 # Sistema de Gestão de Pedidos — E-commerce
 
-> Atividade desafiadora Unidade Curricular **Desenvolvimento Back-end**
+> Projeto integrador da Unidade Curricular **Desenvolvimento Back-end**
 > Curso Superior de Tecnologia em Análise e Desenvolvimento de Sistemas — Turma CSTADS601
 
 ## Equipe / Squad
 
 | Nome | Papel na Aula 01 |
 |---|---|
-| Samuel Santana Pereira Campos | Responsável do dia |
-| Rafael Paiutto da Silva | |
+| _(nome do integrante 1)_ | Responsável do dia |
+| _(nome do integrante 2)_ | |
+| _(nome do integrante 3)_ | |
+| _(nome do integrante 4)_ | |
 
 ## Descrição do desafio
 
-Este projeto consiste no desenvolvimento de um sistema completo de gestão de pedidos para um
-e-commerce, contemplando o cadastro e o gerenciamento de produtos, clientes, pedidos e
-processamento de pagamentos (cartão, boleto, Pix) de forma organizada e eficiente.
+_(Resuma aqui, com suas palavras, o desafio: uma equipe de desenvolvimento recebeu a demanda de
+construir um sistema de gestão de pedidos para um e-commerce, contemplando cadastro de produtos,
+clientes, pedidos e processamento de pagamentos.)_
 
 ## Funcionalidades previstas
 
@@ -37,42 +39,18 @@ processamento de pagamentos (cartão, boleto, Pix) de forma organizada e eficien
 ## Estrutura de pastas
 
 ```
-ecommerce-pedidos-alfa/
+ecommerce-pedidos-NOMEDASQUAD/
 ├── src/
 │   ├── main/
 │   │   └── java/
 │   │       └── com/senai/ecommerce/
-│   │           ├── Aplicacao.java
 │   │           ├── modelo/
-│   │           │   ├── Cliente.java
-│   │           │   ├── Endereco.java
-│   │           │   ├── ItemPedido.java
-│   │           │   └── Produto.java
 │   │           ├── servico/
 │   │           ├── repositorio/
 │   │           └── util/
 │   └── test/
 │       └── java/
 │           └── com/senai/ecommerce/
-│               └── AplicacaoTest.java
-├── docs/                 # diagramas (draw.io + PNG) das Aulas 04, 06 e 07
-├── back/
-│   └── ecommerce-pedidos-alfa/
-│       ├── pom.xml
-│       └── src/
-│           ├── main/
-│           │   └── java/
-│           │       └── com/ecommerce/pedidos/alfa/
-│           │           ├── model/
-│           │           │   ├── Cliente.java
-│           │           │   ├── Endereco.java
-│           │           │   ├── ItemPedido.java
-│           │           │   └── Produto.java
-│           │           └── App.java
-│           └── test/
-│               └── java/
-│                   └── com/ecommerce/pedidos/alfa/
-├── front/
 ├── pom.xml
 ├── README.md
 └── .gitignore
@@ -80,12 +58,7 @@ ecommerce-pedidos-alfa/
 
 ## Como rodar o projeto
 
-```bash
-mvn compile
-mvn exec:java -Dexec.mainClass="com.senai.ecommerce.Aplicacao"
-mvn test
-```
-_(Projeto acadêmico do SENAI na aula de back end.)_
+_(Preencher a partir das próximas aulas, conforme o projeto evoluir.)_
 
 ## Roadmap do projeto (por aula)
 
