@@ -5,13 +5,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import com.senai.ecommerce.modelo.pagamento.FormaPagamento;
+import com.senai.ecommerce.modelo.pagamento.ProcessadorPagamento;
 
 public class Pedido {
     private final String numero;
-    private final Cliente cliente; // associação 1 para 1, obrigatória
-    private final List<ItemPedido> itens = new ArrayList<>(); // composição: o pedido é dono dos itens
-    private FormaPagamento formaPagamento; // associação 0..1, opcional
+    private final Cliente cliente; 
+    private final List<ItemPedido> itens = new ArrayList<>(); 
+    private ProcessadorPagamento formaPagamento; 
+    private SituacaoDoPedido situacao = SituacaoDoPedido.ABERTO;
 
     public Pedido(String numero, Cliente cliente) {
         if (cliente == null) {
@@ -29,7 +30,11 @@ public class Pedido {
         return cliente;
     }
 
-    // composição de verdade: o pedido cria o próprio item, quem chama não entrega um ItemPedido pronto
+    public SituacaoDoPedido getSituacao() {
+        return situacao;
+    }
+
+    // versão completa: contém toda a lógica e validação
     public void adicionarItem(Produto produto, int quantidade) {
         if (produto == null) {
             throw new IllegalArgumentException("Produto é obrigatório");
@@ -40,18 +45,37 @@ public class Pedido {
         itens.add(new ItemPedido(produto, quantidade, produto.getPreco()));
     }
 
+ 
+    public void adicionarItem(Produto produto) {
+        adicionarItem(produto, 1);
+    }
+
     public List<ItemPedido> getItens() {
         return Collections.unmodifiableList(itens);
     }
 
-    public void pagarCom(FormaPagamento formaPagamento) {
+    
+    public boolean pagar(ProcessadorPagamento processador) {
+        if (processador == null) {
+            throw new IllegalArgumentException("Forma de pagamento é obrigatória");
+        }
         if (itens.isEmpty()) {
             throw new IllegalStateException("Pedido sem itens não pode ser pago");
         }
-        this.formaPagamento = formaPagamento;
+        if (situacao == SituacaoDoPedido.PAGO) {
+            // decisão da equipe: pedido já pago recusa uma nova tentativa de pagamento
+            throw new IllegalStateException("Pedido já está pago");
+        }
+
+        boolean aprovado = processador.processar(calcularValorTotal());
+        if (aprovado) {
+            this.formaPagamento = processador;
+            this.situacao = SituacaoDoPedido.PAGO;
+        }
+        return aprovado;
     }
 
-    public FormaPagamento getFormaPagamento() {
+    public ProcessadorPagamento getFormaPagamento() {
         return formaPagamento;
     }
 
@@ -65,9 +89,9 @@ public class Pedido {
 
     @Override
     public String toString() {
-        String pagamento = (formaPagamento == null) ? "pendente" : formaPagamento.getResumo();
+        String pagamento = (formaPagamento == null) ? "pendente" : formaPagamento.getDescricao();
         return "Pedido [numero=" + numero + ", cliente=" + cliente.getNome()
                 + ", itens=" + itens.size() + ", total=R$ " + calcularValorTotal()
-                + ", formaPagamento=" + pagamento + "]";
+                + ", situacao=" + situacao + ", formaPagamento=" + pagamento + "]";
     }
 }

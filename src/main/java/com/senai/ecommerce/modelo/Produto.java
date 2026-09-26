@@ -1,6 +1,6 @@
 package com.senai.ecommerce.modelo;
 
-// Modelo da classe Produto
+
 public class Produto {
     private String codigo;
     private String nome;
@@ -10,8 +10,7 @@ public class Produto {
     private boolean ativo;
 
     public Produto(String codigo, String nome, double preco, int estoque) {
-        // o código identifica o produto no catálogo e não muda depois de criado,
-        // por isso é atribuído direto aqui (com validação) em vez de por um setter público
+  
         if (codigo == null || codigo.isBlank()) {
             throw new IllegalArgumentException("Código é obrigatório");
         }
