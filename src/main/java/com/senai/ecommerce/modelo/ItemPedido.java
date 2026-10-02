@@ -1,5 +1,7 @@
 package com.senai.ecommerce.modelo;
 
+import com.senai.ecommerce.util.Validador;
+
 public class ItemPedido {
     private Produto produto;
     private int quantidade;
@@ -17,9 +19,7 @@ public class ItemPedido {
     }
 
     public void setProduto(Produto produto) {
-        if (produto == null) {
-            throw new IllegalArgumentException("O produto não pode ser nulo.");
-        }
+        Validador.exigirNaoNulo(produto, "O produto não pode ser nulo.");
         this.produto = produto;
     }
 
@@ -28,9 +28,7 @@ public class ItemPedido {
     }
 
     public void setQuantidade(int quantidade) {
-        if (quantidade <= 0) {
-            throw new IllegalArgumentException("A quantidade deve ser maior que zero.");
-        }
+        Validador.exigirPositivo(quantidade, "A quantidade deve ser maior que zero.");
         this.quantidade = quantidade;
     }
 
@@ -39,9 +37,7 @@ public class ItemPedido {
     }
 
     public void setPrecoPraticado(double precoPraticado) {
-        if (precoPraticado < 0) {
-            throw new IllegalArgumentException("O preço praticado não pode ser negativo.");
-        }
+        Validador.exigirNaoNegativo(precoPraticado, "O preço praticado não pode ser negativo.");
         this.precoPraticado = precoPraticado;
     }
 

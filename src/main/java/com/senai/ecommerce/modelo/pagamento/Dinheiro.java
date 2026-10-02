@@ -2,6 +2,8 @@ package com.senai.ecommerce.modelo.pagamento;
 
 import java.math.BigDecimal;
 
+import com.senai.ecommerce.util.Validador;
+
 /**
  * Quarta forma de pagamento — a prova do princípio aberto/fechado.
  * Nenhum arquivo existente precisou ser alterado para acrescentá-la:
@@ -19,9 +21,7 @@ public class Dinheiro implements ProcessadorPagamento {
     private String comprovante;
 
     public Dinheiro(BigDecimal valorRecebido) {
-        if (valorRecebido == null || valorRecebido.compareTo(BigDecimal.ZERO) <= 0) {
-            throw new IllegalArgumentException("Valor recebido deve ser positivo");
-        }
+        Validador.exigirPositivo(valorRecebido, "Valor recebido deve ser positivo");
         this.valorRecebido = valorRecebido;
     }
 

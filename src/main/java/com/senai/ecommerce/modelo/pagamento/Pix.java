@@ -2,6 +2,8 @@ package com.senai.ecommerce.modelo.pagamento;
 
 import java.math.BigDecimal;
 
+import com.senai.ecommerce.util.Validador;
+
 /**
  * Regra própria do Pix: aprovação imediata, desde que a chave seja
  * obrigatória e não vazia.
@@ -11,9 +13,7 @@ public class Pix extends FormaPagamento {
 
     public Pix(BigDecimal valor, String chave) {
         super(valor);
-        if (chave == null || chave.isBlank()) {
-            throw new IllegalArgumentException("Chave Pix é obrigatória");
-        }
+        Validador.exigirNaoVazio(chave, "Chave Pix é obrigatória");
         this.chave = chave;
     }
 

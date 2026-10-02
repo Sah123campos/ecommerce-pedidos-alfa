@@ -3,6 +3,8 @@ package com.senai.ecommerce.modelo.pagamento;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
+import com.senai.ecommerce.util.Validador;
+
 /**
  * Regra própria do cartão: recusa mais de 12 parcelas e exige um valor
  * mínimo por parcela. As duas violações são erro de uso da classe —
@@ -17,12 +19,8 @@ public class CartaoCredito extends FormaPagamento implements Estornavel {
 
     public CartaoCredito(BigDecimal valor, String numeroMascarado, int parcelas) {
         super(valor);
-        if (numeroMascarado == null || numeroMascarado.isBlank()) {
-            throw new IllegalArgumentException("Número do cartão é obrigatório");
-        }
-        if (parcelas <= 0) {
-            throw new IllegalArgumentException("Quantidade de parcelas deve ser positiva");
-        }
+        Validador.exigirNaoVazio(numeroMascarado, "Número do cartão é obrigatório");
+        Validador.exigirPositivo(parcelas, "Quantidade de parcelas deve ser positiva");
         if (parcelas > MAXIMO_DE_PARCELAS) {
             throw new IllegalArgumentException(
                     "Cartão não aceita mais de " + MAXIMO_DE_PARCELAS + " parcelas");

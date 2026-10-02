@@ -3,6 +3,8 @@ package com.senai.ecommerce.modelo.pagamento;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+import com.senai.ecommerce.util.Validador;
+
 /**
  * Classe-mãe das formas de pagamento concretas (Aula 06).
  *
@@ -22,9 +24,7 @@ public abstract class FormaPagamento implements ProcessadorPagamento {
     }
 
     public void setValor(BigDecimal valor) {
-        if (valor == null || valor.compareTo(BigDecimal.ZERO) <= 0) {
-            throw new IllegalArgumentException("Valor do pagamento deve ser positivo");
-        }
+        Validador.exigirPositivo(valor, "Valor do pagamento deve ser positivo");
         this.valor = valor;
     }
 

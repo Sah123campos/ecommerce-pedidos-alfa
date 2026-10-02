@@ -1,6 +1,9 @@
 package com.senai.ecommerce.modelo;
 
+import com.senai.ecommerce.excecao.EstoqueInsuficienteException;
+import com.senai.ecommerce.util.Validador;
 
+// Modelo da classe Produto
 public class Produto {
     private String codigo;
     private String nome;
@@ -10,10 +13,9 @@ public class Produto {
     private boolean ativo;
 
     public Produto(String codigo, String nome, double preco, int estoque) {
-  
-        if (codigo == null || codigo.isBlank()) {
-            throw new IllegalArgumentException("Código é obrigatório");
-        }
+        // o código identifica o produto no catálogo e não muda depois de criado,
+        // por isso é atribuído direto aqui (com validação) em vez de por um setter público
+        Validador.exigirNaoVazio(codigo, "Código é obrigatório");
         this.codigo = codigo;
         setNome(nome);
         setPreco(preco);
@@ -30,6 +32,7 @@ public class Produto {
     }
 
     public void setNome(String nome) {
+        Validador.exigirNaoVazio(nome, "Nome do produto é obrigatório");
         this.nome = nome;
     }
 
@@ -50,9 +53,7 @@ public class Produto {
     }
 
     public void setPreco(double preco) {
-        if (preco < 0) {
-            throw new IllegalArgumentException("Preço não pode ser negativo: " + preco);
-        }
+        Validador.exigirPositivo(preco, "Preço deve ser maior que zero: " + preco);
         this.preco = preco;
     }
 
@@ -61,10 +62,7 @@ public class Produto {
     }
 
     public void setQuantidadeEmEstoque(int quantidade) {
-        if (quantidade < 0) {
-            throw new IllegalArgumentException("Estoque não pode ser negativo: " + quantidade);
-        }
-
+        Validador.exigirNaoNegativo(quantidade, "Estoque não pode ser negativo: " + quantidade);
         this.quantidadeEmEstoque = quantidade;
     }
 
@@ -76,13 +74,17 @@ public class Produto {
         return ativo && this.quantidadeEmEstoque >= quantidadeDesejada;
     }
 
-    public void baixarEstoque(int quantidade) {
-        if (quantidade <= 0) {
-            throw new IllegalArgumentException("Quantidade deve ser positiva");
-        }
+    /**
+     * Dá baixa no estoque. Quantidade inválida (zero ou negativa) é
+     * defeito de quem chamou — unchecked, corrige-se no código. Estoque
+     * insuficiente é uma situação de negócio perfeitamente possível —
+     * checked, porque quem chamou pode e deve reagir a ela (oferecer
+     * o que há disponível, sugerir outro produto).
+     */
+    public void baixarEstoque(int quantidade) throws EstoqueInsuficienteException {
+        Validador.exigirPositivo(quantidade, "Quantidade deve ser positiva");
         if (quantidade > quantidadeEmEstoque) {
-            throw new IllegalArgumentException(
-                    "Estoque insuficiente. Disponível: " + quantidadeEmEstoque);
+            throw new EstoqueInsuficienteException(this, quantidade);
         }
         this.quantidadeEmEstoque = this.quantidadeEmEstoque - quantidade;
     }
