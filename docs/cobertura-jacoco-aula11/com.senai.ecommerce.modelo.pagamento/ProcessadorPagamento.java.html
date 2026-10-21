@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ProcessadorPagamento.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ecommerce-pedidos-alfa</a> &gt; <a href="index.source.html" class="el_package">com.senai.ecommerce.modelo.pagamento</a> &gt; <span class="el_source">ProcessadorPagamento.java</span></div><h1>ProcessadorPagamento.java</h1><pre class="source lang-java linenums">package com.senai.ecommerce.modelo.pagamento;
+
+import java.math.BigDecimal;
+
+/**
+ * Contrato comum a qualquer forma de pagamento aceita pelo sistema.
+ *
+ * O {@code Pedido} conhece apenas este contrato — nunca uma classe
+ * concreta como Pix, Boleto ou CartaoCredito. É isso que permite
+ * acrescentar uma forma de pagamento nova sem alterar nenhuma linha
+ * de código já existente (princípio aberto/fechado).
+ */
+public interface ProcessadorPagamento {
+
+    /**
+     * Processa o pagamento do valor informado.
+     *
+     * @return {@code true} se aprovado imediatamente; {@code false} se a
+     *         aprovação depende de um evento futuro (ex.: compensação de
+     *         um boleto) — nunca lança exceção para uma situação de
+     *         negócio prevista.
+     */
+    boolean processar(BigDecimal valor);
+
+    /** Identificador do pagamento aprovado, gerado por cada forma à sua maneira. */
+    String getComprovante();
+
+    /** Descrição amigável do pagamento, para exibição ao cliente. */
+    String getDescricao();
+
+    /**
+     * Indica se a forma aceita parcelamento.
+     * Método default: a maioria das formas não parcela, então só quem
+     * precisa (o cartão de crédito) sobrescreve.
+     */
+    default boolean permiteParcelamento() {
+<span class="fc" id="L37">        return false;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.0000</span></div></body></html>

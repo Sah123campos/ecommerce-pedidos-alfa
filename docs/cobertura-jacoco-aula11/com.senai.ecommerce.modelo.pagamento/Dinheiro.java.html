@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Dinheiro.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ecommerce-pedidos-alfa</a> &gt; <a href="index.source.html" class="el_package">com.senai.ecommerce.modelo.pagamento</a> &gt; <span class="el_source">Dinheiro.java</span></div><h1>Dinheiro.java</h1><pre class="source lang-java linenums">package com.senai.ecommerce.modelo.pagamento;
+
+import java.math.BigDecimal;
+
+import com.senai.ecommerce.util.Validador;
+
+/**
+ * Quarta forma de pagamento — a prova do princípio aberto/fechado.
+ * Nenhum arquivo existente precisou ser alterado para acrescentá-la:
+ * ela só precisou cumprir o contrato {@link ProcessadorPagamento}.
+ * Repare que ela nem estende {@code FormaPagamento} — a interface não
+ * impõe uma origem comum, só uma capacidade.
+ *
+ * Regra própria: recusa valor recebido menor que o total (situação de
+ * negócio prevista -&gt; {@code false}, sem exceção) e calcula o troco
+ * quando o pagamento é aprovado.
+ */
+public class Dinheiro implements ProcessadorPagamento {
+    private final BigDecimal valorRecebido;
+<span class="fc" id="L20">    private BigDecimal troco = BigDecimal.ZERO;</span>
+    private String comprovante;
+
+<span class="fc" id="L23">    public Dinheiro(BigDecimal valorRecebido) {</span>
+<span class="fc" id="L24">        Validador.exigirPositivo(valorRecebido, &quot;Valor recebido deve ser positivo&quot;);</span>
+<span class="fc" id="L25">        this.valorRecebido = valorRecebido;</span>
+<span class="fc" id="L26">    }</span>
+
+    public BigDecimal getTroco() {
+<span class="fc" id="L29">        return troco;</span>
+    }
+
+    @Override
+    public boolean processar(BigDecimal valor) {
+<span class="fc bfc" id="L34" title="All 2 branches covered.">        if (valorRecebido.compareTo(valor) &lt; 0) {</span>
+<span class="fc" id="L35">            System.out.println(&quot;Valor recebido insuficiente para pagamento em dinheiro&quot;);</span>
+<span class="fc" id="L36">            return false;</span>
+        }
+<span class="fc" id="L38">        troco = valorRecebido.subtract(valor);</span>
+<span class="fc" id="L39">        comprovante = &quot;DINHEIRO-&quot; + System.currentTimeMillis();</span>
+<span class="fc" id="L40">        return true;</span>
+    }
+
+    @Override
+    public String getComprovante() {
+<span class="fc" id="L45">        return comprovante;</span>
+    }
+
+    @Override
+    public String getDescricao() {
+<span class="fc" id="L50">        return &quot;Dinheiro (recebido R$ &quot; + valorRecebido + &quot;)&quot;;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.0000</span></div></body></html>

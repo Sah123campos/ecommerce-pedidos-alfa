@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Cliente.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ecommerce-pedidos-alfa</a> &gt; <a href="index.source.html" class="el_package">com.senai.ecommerce.modelo</a> &gt; <span class="el_source">Cliente.java</span></div><h1>Cliente.java</h1><pre class="source lang-java linenums">package com.senai.ecommerce.modelo;
+
+import com.senai.ecommerce.util.Validador;
+
+/**
+ * Aula 09: todo cliente nasce validado. Nome, CPF e e-mail inválidos
+ * são defeito de quem chamou o cadastro — por isso as validações usam
+ * {@link IllegalArgumentException} (via {@link Validador}), unchecked,
+ * em vez de uma exceção customizada: não há nada de útil a fazer em
+ * tempo de execução além de corrigir o dado enviado.
+ */
+public class Cliente {
+    private String nome;
+    private String cpf;
+    private String email;
+    private String telefone;
+    private Endereco endereco;
+
+    // construtor chama os próprios setters para que a validação exista
+    // em um único lugar, não duplicada aqui
+<span class="fc" id="L21">    public Cliente(String nome, String cpf, String email, Endereco endereco) {</span>
+<span class="fc" id="L22">        setNome(nome);</span>
+<span class="fc" id="L23">        setCpf(cpf);</span>
+<span class="fc" id="L24">        setEmail(email);</span>
+<span class="fc" id="L25">        this.endereco = endereco;</span>
+<span class="fc" id="L26">    }</span>
+
+    public String getNome() {
+<span class="fc" id="L29">        return nome;</span>
+    }
+
+    public void setNome(String nome) {
+<span class="fc" id="L33">        Validador.exigirNaoVazio(nome, &quot;Nome do cliente é obrigatório&quot;);</span>
+<span class="fc" id="L34">        this.nome = nome;</span>
+<span class="fc" id="L35">    }</span>
+
+    public String getCpf() {
+<span class="fc" id="L38">        return cpf;</span>
+    }
+
+    public void setCpf(String cpf) {
+        // validação simples de formato (11 dígitos); não verifica os dígitos
+        // verificadores do CPF — isso fica para quando houver uma regra de
+        // negócio real exigindo isso
+<span class="fc" id="L45">        Validador.exigirCpfValido(cpf, &quot;CPF inválido: &quot; + cpf);</span>
+<span class="fc" id="L46">        this.cpf = cpf;</span>
+<span class="fc" id="L47">    }</span>
+
+    public String getEmail() {
+<span class="fc" id="L50">        return email;</span>
+    }
+
+    public void setEmail(String email) {
+<span class="fc" id="L54">        Validador.exigirEmailValido(email, &quot;E-mail inválido: &quot; + email);</span>
+<span class="fc" id="L55">        this.email = email;</span>
+<span class="fc" id="L56">    }</span>
+
+    public String getTelefone() {
+<span class="nc" id="L59">        return telefone;</span>
+    }
+
+    public void setTelefone(String telefone) {
+<span class="nc" id="L63">        this.telefone = telefone;</span>
+<span class="nc" id="L64">    }</span>
+
+    public Endereco getEndereco() {
+<span class="fc" id="L67">        return endereco;</span>
+    }
+
+    public void setEndereco(Endereco endereco) {
+<span class="nc" id="L71">        this.endereco = endereco;</span>
+<span class="nc" id="L72">    }</span>
+
+    @Override
+    public String toString() {
+<span class="nc" id="L76">        return &quot;Cliente [nome=&quot; + nome + &quot;, cpf=&quot; + cpf + &quot;, email=&quot; + email + &quot;, telefone=&quot; + telefone + &quot;, endereco=&quot;</span>
+<span class="nc" id="L77">                + endereco.toString() + &quot;]&quot;;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.0000</span></div></body></html>
