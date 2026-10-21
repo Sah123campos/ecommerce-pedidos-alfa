@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ECommerceException.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ecommerce-pedidos-alfa</a> &gt; <a href="index.source.html" class="el_package">com.senai.ecommerce.excecao</a> &gt; <span class="el_source">ECommerceException.java</span></div><h1>ECommerceException.java</h1><pre class="source lang-java linenums">package com.senai.ecommerce.excecao;
+
+/**
+ * Raiz comum de todas as exceções de negócio do domínio.
+ *
+ * Ninguém lança {@code ECommerceException} diretamente — ela existe para
+ * que a camada mais externa (hoje, {@code Aplicacao}; amanhã, um
+ * Controller REST) possa capturar tudo o que é falha de negócio com um
+ * único catch, sem capturar o que não é (bugs de programação, que
+ * continuam sendo {@link RuntimeException}).
+ *
+ * É checked de propósito: toda falha de negócio prevista precisa
+ * aparecer na assinatura do método e ser considerada por quem chama.
+ */
+public class ECommerceException extends Exception {
+
+    public ECommerceException(String mensagem) {
+<span class="fc" id="L18">        super(mensagem);</span>
+<span class="fc" id="L19">    }</span>
+
+    public ECommerceException(String mensagem, Throwable causa) {
+<span class="fc" id="L22">        super(mensagem, causa);</span>
+<span class="fc" id="L23">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.0000</span></div></body></html>

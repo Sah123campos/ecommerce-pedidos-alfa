@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FormaPagamento.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ecommerce-pedidos-alfa</a> &gt; <a href="index.source.html" class="el_package">com.senai.ecommerce.modelo.pagamento</a> &gt; <span class="el_source">FormaPagamento.java</span></div><h1>FormaPagamento.java</h1><pre class="source lang-java linenums">package com.senai.ecommerce.modelo.pagamento;
+
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+
+import com.senai.ecommerce.util.Validador;
+
+/**
+ * Classe-mãe das formas de pagamento concretas (Aula 06).
+ *
+ * Guarda o que é comum a todas — valor, momento do pagamento e
+ * comprovante — e cumpre o contrato {@link ProcessadorPagamento}
+ * (Aula 08). Quem decide COMO processar continua sendo cada
+ * subclasse: por isso {@code processar(BigDecimal)} permanece sem
+ * implementação aqui.
+ */
+public abstract class FormaPagamento implements ProcessadorPagamento {
+    private BigDecimal valor;
+    private LocalDateTime dataDoPagamento;
+    private String comprovante;
+
+<span class="fc" id="L22">    protected FormaPagamento(BigDecimal valor) {</span>
+<span class="fc" id="L23">        setValor(valor);</span>
+<span class="fc" id="L24">    }</span>
+
+    public void setValor(BigDecimal valor) {
+<span class="fc" id="L27">        Validador.exigirPositivo(valor, &quot;Valor do pagamento deve ser positivo&quot;);</span>
+<span class="fc" id="L28">        this.valor = valor;</span>
+<span class="fc" id="L29">    }</span>
+
+    public BigDecimal getValor() {
+<span class="fc" id="L32">        return valor;</span>
+    }
+
+    public LocalDateTime getDataDoPagamento() {
+<span class="fc" id="L36">        return dataDoPagamento;</span>
+    }
+
+    // as subclasses chamam isto quando o pagamento é efetivamente aprovado
+    protected void registrarComprovante(String comprovante) {
+<span class="fc" id="L41">        this.comprovante = comprovante;</span>
+<span class="fc" id="L42">        this.dataDoPagamento = LocalDateTime.now();</span>
+<span class="fc" id="L43">    }</span>
+
+    @Override
+    public String getComprovante() {
+<span class="fc" id="L47">        return comprovante;</span>
+    }
+
+    // comportamento comum, herdado pronto por todas; cada forma pode enriquecer com @Override
+    @Override
+    public String getDescricao() {
+<span class="fc" id="L53">        return String.format(&quot;%s no valor de R$ %s&quot;, getClass().getSimpleName(), valor);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.0000</span></div></body></html>

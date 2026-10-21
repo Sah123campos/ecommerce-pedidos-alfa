@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Pedido.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ecommerce-pedidos-alfa</a> &gt; <a href="index.source.html" class="el_package">com.senai.ecommerce.modelo</a> &gt; <span class="el_source">Pedido.java</span></div><h1>Pedido.java</h1><pre class="source lang-java linenums">package com.senai.ecommerce.modelo;
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import com.senai.ecommerce.excecao.EstoqueInsuficienteException;
+import com.senai.ecommerce.excecao.PagamentoRecusadoException;
+import com.senai.ecommerce.excecao.PedidoInvalidoException;
+import com.senai.ecommerce.modelo.pagamento.ProcessadorPagamento;
+import com.senai.ecommerce.util.Validador;
+
+public class Pedido {
+    private final String numero;
+    private final Cliente cliente; // associação 1 para 1, obrigatória
+<span class="fc" id="L17">    private final List&lt;ItemPedido&gt; itens = new ArrayList&lt;&gt;(); // composição: o pedido é dono dos itens</span>
+    private ProcessadorPagamento formaPagamento; // associação 0..1 — só o contrato, nunca uma classe concreta
+<span class="fc" id="L19">    private SituacaoDoPedido situacao = SituacaoDoPedido.ABERTO;</span>
+
+<span class="fc" id="L21">    public Pedido(String numero, Cliente cliente) {</span>
+<span class="fc" id="L22">        Validador.exigirNaoNulo(cliente, &quot;Pedido exige um cliente&quot;);</span>
+<span class="fc" id="L23">        this.numero = numero;</span>
+<span class="fc" id="L24">        this.cliente = cliente;</span>
+<span class="fc" id="L25">    }</span>
+
+    public String getNumero() {
+<span class="fc" id="L28">        return numero;</span>
+    }
+
+    public Cliente getCliente() {
+<span class="fc" id="L32">        return cliente;</span>
+    }
+
+    public SituacaoDoPedido getSituacao() {
+<span class="fc" id="L36">        return situacao;</span>
+    }
+
+    /**
+     * Versão completa: contém toda a lógica e validação.
+     *
+     * {@code produto == null} e {@code quantidade &lt;= 0} são defeito de
+     * quem chamou — unchecked. Estoque insuficiente é situação de
+     * negócio prevista — checked, propagada de {@link Produto#baixarEstoque}.
+     * Alterar um pedido já pago também é checked: quem chamou pode
+     * reagir (abrir um pedido novo, por exemplo).
+     */
+    public void adicionarItem(Produto produto, int quantidade)
+            throws EstoqueInsuficienteException, PedidoInvalidoException {
+<span class="fc" id="L50">        Validador.exigirNaoNulo(produto, &quot;Produto é obrigatório&quot;);</span>
+<span class="fc bfc" id="L51" title="All 2 branches covered.">        if (situacao == SituacaoDoPedido.PAGO) {</span>
+<span class="fc" id="L52">            throw new PedidoInvalidoException(numero, &quot;não é possível alterar um pedido já pago&quot;);</span>
+        }
+<span class="fc" id="L54">        produto.baixarEstoque(quantidade); // pode lançar EstoqueInsuficienteException</span>
+<span class="fc" id="L55">        itens.add(new ItemPedido(produto, quantidade, produto.getPreco()));</span>
+<span class="fc" id="L56">    }</span>
+
+    // sobrecarga (polimorfismo estático): conveniência para o caso mais comum —
+    // delega para a versão completa, nunca duplica a regra nem o throws
+    public void adicionarItem(Produto produto) throws EstoqueInsuficienteException, PedidoInvalidoException {
+<span class="fc" id="L61">        adicionarItem(produto, 1);</span>
+<span class="fc" id="L62">    }</span>
+
+    public List&lt;ItemPedido&gt; getItens() {
+<span class="fc" id="L65">        return Collections.unmodifiableList(itens);</span>
+    }
+
+    /**
+     * Paga o pedido usando qualquer forma que cumpra o contrato
+     * {@link ProcessadorPagamento}. Nenhuma classe concreta é citada
+     * aqui — e é por isso que este método não precisará mudar quando
+     * surgir uma forma de pagamento nova (Aula 08).
+     *
+     * Pedido sem itens e pedido já pago são situações de negócio
+     * previstas: {@link PedidoInvalidoException}, checked. Pagamento
+     * não aprovado pelo processador também é previsto — vira
+     * {@link PagamentoRecusadoException}, e a situação do pedido
+     * permanece ABERTO, para que o cliente possa tentar outra forma.
+     */
+    public void pagar(ProcessadorPagamento processador) throws PedidoInvalidoException, PagamentoRecusadoException {
+<span class="fc" id="L81">        Validador.exigirNaoNulo(processador, &quot;Forma de pagamento é obrigatória&quot;);</span>
+<span class="fc bfc" id="L82" title="All 2 branches covered.">        if (itens.isEmpty()) {</span>
+<span class="fc" id="L83">            throw new PedidoInvalidoException(numero, &quot;pedido sem itens não pode ser pago&quot;);</span>
+        }
+<span class="fc bfc" id="L85" title="All 2 branches covered.">        if (situacao == SituacaoDoPedido.PAGO) {</span>
+<span class="fc" id="L86">            throw new PedidoInvalidoException(numero, &quot;pedido já está pago&quot;);</span>
+        }
+
+<span class="fc" id="L89">        boolean aprovado = processador.processar(calcularValorTotal());</span>
+<span class="fc bfc" id="L90" title="All 2 branches covered.">        if (!aprovado) {</span>
+            // situação permanece ABERTO: o cliente pode tentar outra forma de pagamento
+<span class="fc" id="L92">            throw new PagamentoRecusadoException(processador.getDescricao(), &quot;pagamento não aprovado no momento&quot;);</span>
+        }
+
+<span class="fc" id="L95">        this.formaPagamento = processador;</span>
+<span class="fc" id="L96">        this.situacao = SituacaoDoPedido.PAGO;</span>
+<span class="fc" id="L97">    }</span>
+
+    public ProcessadorPagamento getFormaPagamento() {
+<span class="fc" id="L100">        return formaPagamento;</span>
+    }
+
+    public BigDecimal calcularValorTotal() {
+<span class="fc" id="L104">        BigDecimal total = BigDecimal.ZERO;</span>
+<span class="fc bfc" id="L105" title="All 2 branches covered.">        for (ItemPedido item : itens) {</span>
+<span class="fc" id="L106">            total = total.add(BigDecimal.valueOf(item.calcularSubtotal()));</span>
+<span class="fc" id="L107">        }</span>
+<span class="fc" id="L108">        return total;</span>
+    }
+
+    @Override
+    public String toString() {
+<span class="nc bnc" id="L113" title="All 2 branches missed.">        String pagamento = (formaPagamento == null) ? &quot;pendente&quot; : formaPagamento.getDescricao();</span>
+<span class="nc" id="L114">        return &quot;Pedido [numero=&quot; + numero + &quot;, cliente=&quot; + cliente.getNome()</span>
+<span class="nc" id="L115">                + &quot;, itens=&quot; + itens.size() + &quot;, total=R$ &quot; + calcularValorTotal()</span>
+                + &quot;, situacao=&quot; + situacao + &quot;, formaPagamento=&quot; + pagamento + &quot;]&quot;;
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.0000</span></div></body></html>

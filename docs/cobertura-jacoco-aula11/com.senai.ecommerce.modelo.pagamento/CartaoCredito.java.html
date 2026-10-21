@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CartaoCredito.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ecommerce-pedidos-alfa</a> &gt; <a href="index.source.html" class="el_package">com.senai.ecommerce.modelo.pagamento</a> &gt; <span class="el_source">CartaoCredito.java</span></div><h1>CartaoCredito.java</h1><pre class="source lang-java linenums">package com.senai.ecommerce.modelo.pagamento;
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
+import com.senai.ecommerce.util.Validador;
+
+/**
+ * Regra própria do cartão: recusa mais de 12 parcelas e exige um valor
+ * mínimo por parcela. As duas violações são erro de uso da classe —
+ * por isso lançam exceção, e não devolvem {@code false}.
+ */
+public class CartaoCredito extends FormaPagamento implements Estornavel {
+    private static final int MAXIMO_DE_PARCELAS = 12;
+<span class="fc" id="L15">    private static final BigDecimal VALOR_MINIMO_PARCELA = new BigDecimal(&quot;5.00&quot;);</span>
+
+    private final String numeroMascarado;
+    private final int parcelas;
+
+    public CartaoCredito(BigDecimal valor, String numeroMascarado, int parcelas) {
+<span class="fc" id="L21">        super(valor);</span>
+<span class="fc" id="L22">        Validador.exigirNaoVazio(numeroMascarado, &quot;Número do cartão é obrigatório&quot;);</span>
+<span class="fc" id="L23">        Validador.exigirPositivo(parcelas, &quot;Quantidade de parcelas deve ser positiva&quot;);</span>
+<span class="fc bfc" id="L24" title="All 2 branches covered.">        if (parcelas &gt; MAXIMO_DE_PARCELAS) {</span>
+<span class="fc" id="L25">            throw new IllegalArgumentException(</span>
+                    &quot;Cartão não aceita mais de &quot; + MAXIMO_DE_PARCELAS + &quot; parcelas&quot;);
+        }
+<span class="fc" id="L28">        BigDecimal valorPorParcela = valor.divide(BigDecimal.valueOf(parcelas), 2, RoundingMode.HALF_UP);</span>
+<span class="fc bfc" id="L29" title="All 2 branches covered.">        if (valorPorParcela.compareTo(VALOR_MINIMO_PARCELA) &lt; 0) {</span>
+<span class="fc" id="L30">            throw new IllegalArgumentException(</span>
+                    &quot;Valor por parcela abaixo do mínimo de R$ &quot; + VALOR_MINIMO_PARCELA);
+        }
+<span class="fc" id="L33">        this.numeroMascarado = numeroMascarado;</span>
+<span class="fc" id="L34">        this.parcelas = parcelas;</span>
+<span class="fc" id="L35">    }</span>
+
+    public int getParcelas() {
+<span class="fc" id="L38">        return parcelas;</span>
+    }
+
+    @Override
+    public boolean processar(BigDecimal valor) {
+<span class="fc" id="L43">        System.out.println(&quot;Autorizando cartão &quot; + numeroMascarado + &quot; em &quot; + parcelas + &quot;x&quot;);</span>
+<span class="fc" id="L44">        registrarComprovante(&quot;CARTAO-&quot; + System.currentTimeMillis());</span>
+<span class="fc" id="L45">        return true; // simulação: limite sempre suficiente</span>
+    }
+
+    @Override
+    public boolean estornar(BigDecimal valor) {
+<span class="fc" id="L50">        System.out.println(&quot;Estornando R$ &quot; + valor + &quot; para o cartão &quot; + numeroMascarado);</span>
+<span class="fc" id="L51">        return true;</span>
+    }
+
+    @Override
+    public String getDescricao() {
+<span class="fc" id="L56">        return super.getDescricao() + &quot; (Cartão &quot; + numeroMascarado + &quot;, &quot; + parcelas + &quot;x)&quot;;</span>
+    }
+
+    @Override
+    public boolean permiteParcelamento() {
+<span class="fc" id="L61">        return true;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.0000</span></div></body></html>

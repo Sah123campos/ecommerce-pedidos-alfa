@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PedidoInvalidoException.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ecommerce-pedidos-alfa</a> &gt; <a href="index.source.html" class="el_package">com.senai.ecommerce.excecao</a> &gt; <span class="el_source">PedidoInvalidoException.java</span></div><h1>PedidoInvalidoException.java</h1><pre class="source lang-java linenums">package com.senai.ecommerce.excecao;
+
+/**
+ * Lançada quando a operação pedida é incompatível com a situação atual
+ * do pedido: pagar um pedido sem itens, pagar um pedido já pago,
+ * alterar os itens de um pedido já pago. É checked: quem chamou pode
+ * reagir — informar o cliente, redirecionar para o histórico do
+ * pedido, não tentar cobrar de novo — em vez de travar o fluxo.
+ */
+public class PedidoInvalidoException extends ECommerceException {
+    private final String numeroPedido;
+    private final String motivo;
+
+    public PedidoInvalidoException(String numeroPedido, String motivo) {
+<span class="fc" id="L15">        super(&quot;Pedido &quot; + numeroPedido + &quot;: &quot; + motivo);</span>
+<span class="fc" id="L16">        this.numeroPedido = numeroPedido;</span>
+<span class="fc" id="L17">        this.motivo = motivo;</span>
+<span class="fc" id="L18">    }</span>
+
+    public PedidoInvalidoException(String numeroPedido, String motivo, Throwable causa) {
+<span class="fc" id="L21">        super(&quot;Pedido &quot; + numeroPedido + &quot;: &quot; + motivo, causa);</span>
+<span class="fc" id="L22">        this.numeroPedido = numeroPedido;</span>
+<span class="fc" id="L23">        this.motivo = motivo;</span>
+<span class="fc" id="L24">    }</span>
+
+    public String getNumeroPedido() {
+<span class="fc" id="L27">        return numeroPedido;</span>
+    }
+
+    public String getMotivo() {
+<span class="nc" id="L31">        return motivo;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.0000</span></div></body></html>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ItemPedido.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ecommerce-pedidos-alfa</a> &gt; <a href="index.source.html" class="el_package">com.senai.ecommerce.modelo</a> &gt; <span class="el_source">ItemPedido.java</span></div><h1>ItemPedido.java</h1><pre class="source lang-java linenums">package com.senai.ecommerce.modelo;
+
+import com.senai.ecommerce.util.Validador;
+
+public class ItemPedido {
+    private Produto produto;
+    private int quantidade;
+    private double precoPraticado;
+
+    // Construtor que utiliza os métodos set para inicializar os atributos
+<span class="fc" id="L11">    public ItemPedido(Produto produto, int quantidade, double precoPraticado) {</span>
+<span class="fc" id="L12">        setProduto(produto);</span>
+<span class="fc" id="L13">        setQuantidade(quantidade);</span>
+<span class="fc" id="L14">        setPrecoPraticado(precoPraticado);</span>
+<span class="fc" id="L15">    }</span>
+
+    public Produto getProduto() {
+<span class="fc" id="L18">        return produto;</span>
+    }
+
+    public void setProduto(Produto produto) {
+<span class="fc" id="L22">        Validador.exigirNaoNulo(produto, &quot;O produto não pode ser nulo.&quot;);</span>
+<span class="fc" id="L23">        this.produto = produto;</span>
+<span class="fc" id="L24">    }</span>
+
+    public int getQuantidade() {
+<span class="fc" id="L27">        return quantidade;</span>
+    }
+
+    public void setQuantidade(int quantidade) {
+<span class="fc" id="L31">        Validador.exigirPositivo(quantidade, &quot;A quantidade deve ser maior que zero.&quot;);</span>
+<span class="fc" id="L32">        this.quantidade = quantidade;</span>
+<span class="fc" id="L33">    }</span>
+
+    public double getPrecoPraticado() {
+<span class="fc" id="L36">        return precoPraticado;</span>
+    }
+
+    public void setPrecoPraticado(double precoPraticado) {
+<span class="fc" id="L40">        Validador.exigirNaoNegativo(precoPraticado, &quot;O preço praticado não pode ser negativo.&quot;);</span>
+<span class="fc" id="L41">        this.precoPraticado = precoPraticado;</span>
+<span class="fc" id="L42">    }</span>
+
+    public double calcularSubtotal() {
+<span class="fc" id="L45">        return this.precoPraticado * this.quantidade;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.0000</span></div></body></html>
